@@ -1,0 +1,5 @@
+-- 2024年10月19日22:06:42 新增外部模块添加......
+ALTER TABLE `gen_table` ADD COLUMN `other_module_add` VARCHAR(255) NULL COMMENT '外部模块添加' AFTER `open_reception_details`;
+ALTER TABLE `gen_table` ADD COLUMN `open_add` CHAR(1) DEFAULT '1' NULL COMMENT '开启新增' AFTER `role_ids`, ADD COLUMN `open_update` CHAR(1) DEFAULT '1' NULL COMMENT '开启修改' AFTER `open_add`, ADD COLUMN `open_delete` CHAR(1) DEFAULT '1' NULL COMMENT '开启删除' AFTER `open_update`, CHANGE `open_details` `open_details` CHAR(1) CHARSET utf8 COLLATE utf8_general_ci DEFAULT '0' NULL COMMENT '开启详情' AFTER `open_delete`, CHANGE `open_import` `open_import` CHAR(1) CHARSET utf8 COLLATE utf8_general_ci DEFAULT '0' NULL COMMENT '开启导入' AFTER `open_details`, CHANGE `open_reception_card` `open_reception_card` CHAR(1) CHARSET utf8 COLLATE utf8_general_ci DEFAULT '0' NULL COMMENT '开启前台卡片' AFTER `open_import`;
+-- 2024年11月4日23:03:57 添加逻辑删除
+ALTER TABLE `gen_table` ADD COLUMN `open_tombstone` CHAR(1) CHARSET utf8 COLLATE utf8_general_ci DEFAULT '0' NULL COMMENT '开启逻辑删除'; 

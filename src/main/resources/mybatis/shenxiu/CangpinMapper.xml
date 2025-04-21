@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.shenxiu.mapper.CangpinMapper">
+
+    <resultMap type="Cangpin" id="CangpinResult">
+        <result property="id"    column="id"    />
+        <result property="cangchuId"    column="cangchu_id"    />
+        <result property="mingcheng"    column="mingcheng"    />
+        <result property="zhutu"    column="zhutu"    />
+        <result property="chicun"    column="chicun"    />
+        <result property="zhongliang"    column="zhongliang"    />
+        <result property="dengji"    column="dengji"    />
+        <result property="sediao"    column="sediao"    />
+        <result property="yanjiuwenxian"    column="yanjiuwenxian"    />
+        <result property="wenjian"    column="wenjian"    />
+        <result property="weizhi"    column="weizhi"    />
+        <result property="wendu"    column="wendu"    />
+        <result property="anquan"    column="anquan"    />
+        <result property="fenleiMingcheng"    column="fenlei_mingcheng"    />
+    </resultMap>
+    <sql id="selectCangpinVo">
+        select cangpin.id,
+               cangpin.cangchu_id,
+               cangpin.mingcheng,
+               cangpin.zhutu,
+               cangpin.chicun,
+               cangpin.zhongliang,
+               cangpin.dengji,
+               cangpin.sediao,
+               cangpin.yanjiuwenxian,
+               cangpin.wenjian,
+               cangchu.weizhi,
+               cangchu.wendu,
+               cangchu.anquan,
+               cangpin_fenlei.fenlei_mingcheng
+        from cangpin
+                 left join cangchu on cangpin.cangchu_id = cangchu.id
+                 left join cangpin_fenlei on cangchu.fenlei_id = cangpin_fenlei.id
+    </sql>
+
+    <select id="selectCangpinList" parameterType="Cangpin" resultMap="CangpinResult">
+        <include refid="selectCangpinVo"/>
+        <where>
+            <if test="cangchuId != null "> and cangpin.cangchu_id = #{cangchuId}</if>
+            <if test="fenleiId != null "> and cangchu.fenlei_id = #{fenleiId}</if>
+            <if test="mingcheng != null  and mingcheng != ''"> and cangpin.mingcheng like concat('%', #{mingcheng}, '%')</if>
+            <if test="zhutu != null  and zhutu != ''"> and cangpin.zhutu = #{zhutu}</if>
+            <if test="chicun != null  and chicun != ''"> and cangpin.chicun = #{chicun}</if>
+            <if test="zhongliang != null  and zhongliang != ''"> and cangpin.zhongliang = #{zhongliang}</if>
+            <if test="dengji != null  and dengji != ''"> and cangpin.dengji = #{dengji}</if>
+            <if test="sediao != null  and sediao != ''"> and cangpin.sediao = #{sediao}</if>
+            <if test="yanjiuwenxian != null  and yanjiuwenxian != ''"> and cangpin.yanjiuwenxian = #{yanjiuwenxian}</if>
+            <if test="wenjian != null  and wenjian != ''"> and cangpin.wenjian = #{wenjian}</if>
+            <if test="weizhi != null  and weizhi != ''"> and cangchu.weizhi like concat('%', #{weizhi}, '%')</if>
+            <if test="wendu != null  and wendu != ''"> and cangchu.wendu = #{wendu}</if>
+            <if test="anquan != null  and anquan != ''"> and cangchu.anquan = #{anquan}</if>
+            <if test="fenleiMingcheng != null  and fenleiMingcheng != ''"> and cangpin_fenlei.fenlei_mingcheng like concat('%', #{fenleiMingcheng}, '%')</if>
+        </where>
+    </select>
+
+    <select id="selectCangpinById" parameterType="Long" resultMap="CangpinResult">
+        <include refid="selectCangpinVo"/>
+        where cangpin.id = #{id}
+    </select>
+
+    <insert id="insertCangpin" parameterType="Cangpin" useGeneratedKeys="true" keyProperty="id">
+        insert into cangpin
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="cangchuId != null">cangchu_id,</if>
+            <if test="mingcheng != null and mingcheng != ''">mingcheng,</if>
+            <if test="zhutu != null and zhutu != ''">zhutu,</if>
+            <if test="chicun != null">chicun,</if>
+            <if test="zhongliang != null">zhongliang,</if>
+            <if test="dengji != null and dengji != ''">dengji,</if>
+            <if test="sediao != null">sediao,</if>
+            <if test="yanjiuwenxian != null">yanjiuwenxian,</if>
+            <if test="wenjian != null">wenjian,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="cangchuId != null">#{cangchuId},</if>
+            <if test="mingcheng != null and mingcheng != ''">#{mingcheng},</if>
+            <if test="zhutu != null and zhutu != ''">#{zhutu},</if>
+            <if test="chicun != null">#{chicun},</if>
+            <if test="zhongliang != null">#{zhongliang},</if>
+            <if test="dengji != null and dengji != ''">#{dengji},</if>
+            <if test="sediao != null">#{sediao},</if>
+            <if test="yanjiuwenxian != null">#{yanjiuwenxian},</if>
+            <if test="wenjian != null">#{wenjian},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCangpin" parameterType="Cangpin">
+        update cangpin
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="cangchuId != null">cangchu_id = #{cangchuId},</if>
+            <if test="mingcheng != null and mingcheng != ''">mingcheng = #{mingcheng},</if>
+            <if test="zhutu != null and zhutu != ''">zhutu = #{zhutu},</if>
+            <if test="chicun != null">chicun = #{chicun},</if>
+            <if test="zhongliang != null">zhongliang = #{zhongliang},</if>
+            <if test="dengji != null and dengji != ''">dengji = #{dengji},</if>
+            <if test="sediao != null">sediao = #{sediao},</if>
+            <if test="yanjiuwenxian != null">yanjiuwenxian = #{yanjiuwenxian},</if>
+            <if test="wenjian != null">wenjian = #{wenjian},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCangpinById" parameterType="Long">
+        delete from cangpin where id = #{id}
+    </delete>
+
+    <delete id="deleteCangpinByIds" parameterType="String">
+        delete from cangpin where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.shenxiu.mapper.CangpinFenleiMapper">
+
+    <resultMap type="CangpinFenlei" id="CangpinFenleiResult">
+        <result property="id"    column="id"    />
+        <result property="fenleiMingcheng"    column="fenlei_mingcheng"    />
+    </resultMap>
+    <sql id="selectCangpinFenleiVo">
+        select cangpin_fenlei.id, cangpin_fenlei.fenlei_mingcheng from cangpin_fenlei
+    </sql>
+
+    <select id="selectCangpinFenleiList" parameterType="CangpinFenlei" resultMap="CangpinFenleiResult">
+        <include refid="selectCangpinFenleiVo"/>
+        <where>
+            <if test="fenleiMingcheng != null  and fenleiMingcheng != ''"> and cangpin_fenlei.fenlei_mingcheng like concat('%', #{fenleiMingcheng}, '%')</if>
+        </where>
+    </select>
+
+    <select id="selectCangpinFenleiById" parameterType="Long" resultMap="CangpinFenleiResult">
+        <include refid="selectCangpinFenleiVo"/>
+        where cangpin_fenlei.id = #{id}
+    </select>
+
+    <insert id="insertCangpinFenlei" parameterType="CangpinFenlei" useGeneratedKeys="true" keyProperty="id">
+        insert into cangpin_fenlei
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fenleiMingcheng != null and fenleiMingcheng != ''">fenlei_mingcheng,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="fenleiMingcheng != null and fenleiMingcheng != ''">#{fenleiMingcheng},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCangpinFenlei" parameterType="CangpinFenlei">
+        update cangpin_fenlei
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="fenleiMingcheng != null and fenleiMingcheng != ''">fenlei_mingcheng = #{fenleiMingcheng},</if>
+        </trim>
+        where id = #{id}
+    </update>
+    
+    <delete id="deleteCangpinFenleiById" parameterType="Long">
+        delete from cangpin_fenlei where id = #{id}
+    </delete>
+
+    <delete id="deleteCangpinFenleiByIds" parameterType="String">
+        delete from cangpin_fenlei where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

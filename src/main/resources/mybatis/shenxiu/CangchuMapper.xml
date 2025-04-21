@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.shenxiu.mapper.CangchuMapper">
+
+    <resultMap type="Cangchu" id="CangchuResult">
+        <result property="id"    column="id"    />
+        <result property="fenleiId"    column="fenlei_id"    />
+        <result property="weizhi"    column="weizhi"    />
+        <result property="wendu"    column="wendu"    />
+        <result property="anquan"    column="anquan"    />
+        <result property="cangpinShuliang"    column="cangpin_shuliang"    />
+        <result property="zhangmenren"    column="zhangmenren"    />
+        <result property="fenleiMingcheng"    column="fenlei_mingcheng"    />
+    </resultMap>
+    <sql id="selectCangchuVo">
+        select cangchu.id, cangchu.fenlei_id, cangchu.weizhi, cangchu.wendu, cangchu.anquan, cangchu.cangpin_shuliang, cangchu.zhangmenren,cangpin_fenlei.fenlei_mingcheng from cangchu left join cangpin_fenlei on cangchu.fenlei_id = cangpin_fenlei.id
+    </sql>
+
+    <select id="selectCangchuList" parameterType="Cangchu" resultMap="CangchuResult">
+        <include refid="selectCangchuVo"/>
+        <where>
+            <if test="fenleiId != null "> and cangchu.fenlei_id = #{fenleiId}</if>
+            <if test="weizhi != null  and weizhi != ''"> and cangchu.weizhi like concat('%', #{weizhi}, '%')</if>
+            <if test="wendu != null  and wendu != ''"> and cangchu.wendu = #{wendu}</if>
+            <if test="anquan != null  and anquan != ''"> and cangchu.anquan = #{anquan}</if>
+            <if test="cangpinShuliang != null "> and cangchu.cangpin_shuliang = #{cangpinShuliang}</if>
+            <if test="zhangmenren != null  and zhangmenren != ''"> and cangchu.zhangmenren = #{zhangmenren}</if>
+            <if test="fenleiMingcheng != null  and fenleiMingcheng != ''"> and cangpin_fenlei.fenlei_mingcheng like concat('%', #{fenleiMingcheng}, '%')</if>
+        </where>
+    </select>
+
+    <select id="selectCangchuById" parameterType="Long" resultMap="CangchuResult">
+        <include refid="selectCangchuVo"/>
+        where cangchu.id = #{id}
+    </select>
+
+    <insert id="insertCangchu" parameterType="Cangchu" useGeneratedKeys="true" keyProperty="id">
+        insert into cangchu
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="fenleiId != null">fenlei_id,</if>
+            <if test="weizhi != null and weizhi != ''">weizhi,</if>
+            <if test="wendu != null and wendu != ''">wendu,</if>
+            <if test="anquan != null and anquan != ''">anquan,</if>
+            <if test="cangpinShuliang != null">cangpin_shuliang,</if>
+            <if test="zhangmenren != null">zhangmenren,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="fenleiId != null">#{fenleiId},</if>
+            <if test="weizhi != null and weizhi != ''">#{weizhi},</if>
+            <if test="wendu != null and wendu != ''">#{wendu},</if>
+            <if test="anquan != null and anquan != ''">#{anquan},</if>
+            <if test="cangpinShuliang != null">#{cangpinShuliang},</if>
+            <if test="zhangmenren != null">#{zhangmenren},</if>
+        </trim>
+    </insert>
+
+    <update id="updateCangchu" parameterType="Cangchu">
+        update cangchu
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="fenleiId != null">fenlei_id = #{fenleiId},</if>
+            <if test="weizhi != null and weizhi != ''">weizhi = #{weizhi},</if>
+            <if test="wendu != null and wendu != ''">wendu = #{wendu},</if>
+            <if test="anquan != null and anquan != ''">anquan = #{anquan},</if>
+            <if test="cangpinShuliang != null">cangpin_shuliang = #{cangpinShuliang},</if>
+            <if test="zhangmenren != null">zhangmenren = #{zhangmenren},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCangchuById" parameterType="Long">
+        delete from cangchu where id = #{id}
+    </delete>
+
+    <delete id="deleteCangchuByIds" parameterType="String">
+        delete from cangchu where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

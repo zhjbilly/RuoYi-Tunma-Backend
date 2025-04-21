@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.system.mapper.SysMessageMapper">
+
+    <resultMap type="SysMessage" id="SysMessageResult">
+        <result property="id"    column="id"    />
+        <result property="userId"    column="user_id"    />
+        <result property="messageType"    column="message_type"    />
+        <result property="messageContent"    column="message_content"    />
+        <result property="routingAddress"    column="routing_address"    />
+        <result property="read"    column="read"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="readTime"    column="read_time"    />
+        <result property="delFlag"    column="del_flag"    />
+    </resultMap>
+    <sql id="selectSysMessageVo">
+        select sys_message.id, sys_message.user_id, sys_message.message_type, sys_message.message_content, sys_message.routing_address, sys_message.`read`, sys_message.create_time, sys_message.read_time, sys_message.del_flag from sys_message
+    </sql>
+
+    <select id="selectSysMessageList" parameterType="SysMessage" resultMap="SysMessageResult">
+        <include refid="selectSysMessageVo"/>
+        <where>
+            <if test="userId != null "> and sys_message.user_id = #{userId}</if>
+            <if test="messageType != null  and messageType != ''"> and sys_message.message_type = #{messageType}</if>
+            <if test="messageContent != null  and messageContent != ''"> and sys_message.message_content = #{messageContent}</if>
+            <if test="routingAddress != null  and routingAddress != ''"> and sys_message.routing_address = #{routingAddress}</if>
+            <if test="read != null  and read != ''"> and sys_message.`read` = #{read}</if>
+            <if test="readTime != null "> and sys_message.read_time = #{readTime}</if>
+        </where>
+    </select>
+
+    <select id="selectSysMessageById" parameterType="Long" resultMap="SysMessageResult">
+        <include refid="selectSysMessageVo"/>
+        where sys_message.id = #{id}
+    </select>
+
+    <insert id="insertSysMessage" parameterType="SysMessage" useGeneratedKeys="true" keyProperty="id">
+        insert into sys_message
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">user_id,</if>
+            <if test="messageType != null">message_type,</if>
+            <if test="messageContent != null">message_content,</if>
+            <if test="routingAddress != null">routing_address,</if>
+            <if test="read != null">`read`,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="readTime != null">read_time,</if>
+            <if test="delFlag != null">del_flag,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">#{userId},</if>
+            <if test="messageType != null">#{messageType},</if>
+            <if test="messageContent != null">#{messageContent},</if>
+            <if test="routingAddress != null">#{routingAddress},</if>
+            <if test="read != null">#{read},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="readTime != null">#{readTime},</if>
+            <if test="delFlag != null">#{delFlag},</if>
+        </trim>
+    </insert>
+
+    <update id="updateSysMessage" parameterType="SysMessage">
+        update sys_message
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="messageType != null">message_type = #{messageType},</if>
+            <if test="messageContent != null">message_content = #{messageContent},</if>
+            <if test="routingAddress != null">routing_address = #{routingAddress},</if>
+            <if test="read != null">`read` = #{read},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="readTime != null">read_time = #{readTime},</if>
+            <if test="delFlag != null">del_flag = #{delFlag},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteSysMessageById" parameterType="Long">
+        delete from sys_message where id = #{id}
+    </delete>
+
+    <delete id="deleteSysMessageByIds" parameterType="String">
+        delete from sys_message where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!-- 根据 userId 和 read 状态查询消息数量 -->
+    <select id="selectMessageCountByUserIdAndRead" resultType="int">
+        SELECT COUNT(*)
+        FROM sys_message
+        WHERE user_id = #{userId} AND `read` = #{read}
+    </select>
+
+
+    <!-- 根据用户 ID 修改消息的 read 状态 -->
+    <update id="updateMessageReadByUserId">
+        UPDATE sys_message
+        SET `read` = #{read}
+        WHERE user_id = #{userId}
+    </update>
+
+</mapper>

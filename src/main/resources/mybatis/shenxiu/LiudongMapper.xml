@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.shenxiu.mapper.LiudongMapper">
+
+    <resultMap type="Liudong" id="LiudongResult">
+        <result property="id"    column="id"    />
+        <result property="cangpinId"    column="cangpin_id"    />
+        <result property="zhuangtai"    column="zhuangtai"    />
+        <result property="jieyueleixing"    column="jieyueleixing"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="mingcheng"    column="mingcheng"    />
+        <result property="zhutu"    column="zhutu"    />
+        <result property="dengji"    column="dengji"    />
+    </resultMap>
+    <sql id="selectLiudongVo">
+        select liudong.id, liudong.cangpin_id, liudong.zhuangtai, liudong.jieyueleixing, liudong.create_time,cangpin.mingcheng,cangpin.zhutu,cangpin.dengji from liudong left join cangpin on liudong.cangpin_id = cangpin.id
+    </sql>
+
+    <select id="selectLiudongList" parameterType="Liudong" resultMap="LiudongResult">
+        <include refid="selectLiudongVo"/>
+        <where>
+            <if test="cangpinId != null "> and liudong.cangpin_id = #{cangpinId}</if>
+            <if test="zhuangtai != null  and zhuangtai != ''"> and liudong.zhuangtai = #{zhuangtai}</if>
+            <if test="jieyueleixing != null  and jieyueleixing != ''"> and liudong.jieyueleixing = #{jieyueleixing}</if>
+            <if test="mingcheng != null  and mingcheng != ''"> and cangpin.mingcheng like concat('%', #{mingcheng}, '%')</if>
+            <if test="zhutu != null  and zhutu != ''"> and cangpin.zhutu = #{zhutu}</if>
+            <if test="dengji != null  and dengji != ''"> and cangpin.dengji = #{dengji}</if>
+        </where>
+    </select>
+
+    <select id="selectLiudongById" parameterType="Long" resultMap="LiudongResult">
+        <include refid="selectLiudongVo"/>
+        where liudong.id = #{id}
+    </select>
+
+    <insert id="insertLiudong" parameterType="Liudong" useGeneratedKeys="true" keyProperty="id">
+        insert into liudong
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="cangpinId != null">cangpin_id,</if>
+            <if test="zhuangtai != null">zhuangtai,</if>
+            <if test="jieyueleixing != null">jieyueleixing,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="cangpinId != null">#{cangpinId},</if>
+            <if test="zhuangtai != null">#{zhuangtai},</if>
+            <if test="jieyueleixing != null">#{jieyueleixing},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateLiudong" parameterType="Liudong">
+        update liudong
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="cangpinId != null">cangpin_id = #{cangpinId},</if>
+            <if test="zhuangtai != null">zhuangtai = #{zhuangtai},</if>
+            <if test="jieyueleixing != null">jieyueleixing = #{jieyueleixing},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+    
+    <delete id="deleteLiudongById" parameterType="Long">
+        delete from liudong where id = #{id}
+    </delete>
+
+    <delete id="deleteLiudongByIds" parameterType="String">
+        delete from liudong where id in
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
