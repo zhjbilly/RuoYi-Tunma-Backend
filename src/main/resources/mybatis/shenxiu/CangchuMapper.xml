@@ -79,4 +79,8 @@
             #{id}
         </foreach>
     </delete>
+
+    <update id="deductCangchuById">
+        update cangchu set cangpin_shuliang = cangpin_shuliang - #{num} where id = #{id}
+    </update>
 </mapper>

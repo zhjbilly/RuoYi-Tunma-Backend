@@ -1,12 +1,9 @@
 package com.ruoyi.project.shenxiu.domain;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.framework.aspectj.lang.annotation.Excel;
 import com.ruoyi.framework.web.domain.BaseEntity;
-import java.util.Date;
-import java.math.BigDecimal;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  * 藏品流动信息对象 liudong
@@ -24,6 +21,12 @@ public class Liudong extends BaseEntity
     /** 藏品 */
     @Excel(name = "藏品")
     private Long cangpinId;
+
+    @Excel(name = "仓储")
+    private Long cangchuId;
+
+    @Excel(name = "目的地")
+    private String dest;
 
     /** 状态 */
     @Excel(name = "状态")
@@ -46,7 +49,8 @@ public class Liudong extends BaseEntity
     @Excel(name = "等级")
     private String dengji;
 
-
+    /** 删除标识 */
+    private Integer deleted;
 
     public void setId(Long id)
     {
@@ -66,6 +70,23 @@ public class Liudong extends BaseEntity
     {
         return cangpinId;
     }
+
+    public Long getCangchuId() {
+        return cangchuId;
+    }
+
+    public void setCangchuId(Long cangchuId) {
+        this.cangchuId = cangchuId;
+    }
+
+    public String getDest() {
+        return dest;
+    }
+
+    public void setDest(String dest) {
+        this.dest = dest;
+    }
+
     public void setZhuangtai(String zhuangtai)
     {
         this.zhuangtai = zhuangtai;
@@ -113,6 +134,13 @@ public class Liudong extends BaseEntity
     return dengji;
     }
 
+    public Integer getDeleted() {
+        return deleted;
+    }
+    public void setDeleted(Integer deleted) {
+        this.deleted = deleted;
+    }
+
 
     @Override
     public String toString() {
@@ -125,6 +153,7 @@ public class Liudong extends BaseEntity
             .append("mingcheng", getMingcheng())
             .append("zhutu", getZhutu())
             .append("dengji", getDengji())
+            .append("deleted", getDeleted())
             .toString();
     }
 }

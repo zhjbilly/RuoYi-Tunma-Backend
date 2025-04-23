@@ -98,4 +98,48 @@ public class LiudongController extends BaseController
     {
         return liudongService.deleteLiudongByIds(ids);
     }
+
+    /**
+     * 审核通过藏品流动信息
+     */
+    @PreAuthorize("@ss.hasPermi('shenxiu:liudong:approve')")
+    @Log(title = "审核通过藏品流动信息", businessType = BusinessType.UPDATE)
+    @GetMapping("/pass/{id}")
+    public AjaxResult pass(@PathVariable Long id)
+    {
+        return liudongService.approveLiudong(id, true);
+    }
+
+    /**
+     * 审核拒绝藏品流动信息
+     */
+    @PreAuthorize("@ss.hasPermi('shenxiu:liudong:cancel')")
+    @Log(title = "审核拒绝藏品流动信息", businessType = BusinessType.UPDATE)
+    @GetMapping("reject/{id}")
+    public AjaxResult reject(@PathVariable Long id)
+    {
+        return liudongService.approveLiudong(id, false);
+    }
+
+    /**
+     * 归还藏品
+     */
+    @PreAuthorize("@ss.hasPermi('shenxiu:liudong:back')")
+    @Log(title = "归还藏品", businessType = BusinessType.UPDATE)
+    @GetMapping("back/{id}")
+    public AjaxResult back(@PathVariable Long id)
+    {
+        return liudongService.backLiudong(id);
+    }
+
+    /**
+     * 归还藏品审核
+     */
+    @PreAuthorize("@ss.hasPermi('shenxiu:liudong:returned')")
+    @Log(title = "归还藏品审核", businessType = BusinessType.UPDATE)
+    @GetMapping("returned/{id}")
+    public AjaxResult returned(@PathVariable Long id)
+    {
+        return liudongService.approveReturned(id);
+    }
 }

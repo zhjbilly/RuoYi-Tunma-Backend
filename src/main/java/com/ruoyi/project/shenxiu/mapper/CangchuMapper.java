@@ -2,6 +2,8 @@ package com.ruoyi.project.shenxiu.mapper;
 
 import java.util.List;
 import com.ruoyi.project.shenxiu.domain.Cangchu;
+import org.apache.ibatis.annotations.Param;
+
 /**
  * 仓储信息Mapper接口
  * 
@@ -16,7 +18,7 @@ public interface CangchuMapper
      * @param id 仓储信息主键
      * @return 仓储信息
      */
-    public Cangchu selectCangchuById(Long id);
+    Cangchu selectCangchuById(Long id);
 
     /**
      * 查询仓储信息列表
@@ -24,7 +26,7 @@ public interface CangchuMapper
      * @param cangchu 仓储信息
      * @return 仓储信息集合
      */
-    public List<Cangchu> selectCangchuList(Cangchu cangchu);
+    List<Cangchu> selectCangchuList(Cangchu cangchu);
 
     /**
      * 新增仓储信息
@@ -32,7 +34,7 @@ public interface CangchuMapper
      * @param cangchu 仓储信息
      * @return 结果
      */
-    public int insertCangchu(Cangchu cangchu);
+    int insertCangchu(Cangchu cangchu);
 
     /**
      * 修改仓储信息
@@ -40,7 +42,7 @@ public interface CangchuMapper
      * @param cangchu 仓储信息
      * @return 结果
      */
-    public int updateCangchu(Cangchu cangchu);
+    int updateCangchu(Cangchu cangchu);
 
     /**
      * 删除仓储信息
@@ -48,7 +50,7 @@ public interface CangchuMapper
      * @param id 仓储信息主键
      * @return 结果
      */
-    public int deleteCangchuById(Long id);
+    int deleteCangchuById(Long id);
 
     /**
      * 批量删除仓储信息
@@ -56,7 +58,14 @@ public interface CangchuMapper
      * @param ids 需要删除的数据主键集合
      * @return 结果
      */
-    public int deleteCangchuByIds(Long[] ids);
+    int deleteCangchuByIds(Long[] ids);
 
+    /**
+     * 扣减仓储数量
+     * @param id
+     * @param num
+     * @return
+     */
+    int deductCangchuById(@Param("id") Long id, @Param("num") int num);
 
 }

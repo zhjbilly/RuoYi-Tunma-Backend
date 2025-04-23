@@ -16,7 +16,7 @@ public interface LiudongMapper
      * @param id 藏品流动信息主键
      * @return 藏品流动信息
      */
-    public Liudong selectLiudongById(Long id);
+    Liudong selectLiudongById(Long id);
 
     /**
      * 查询藏品流动信息列表
@@ -24,7 +24,7 @@ public interface LiudongMapper
      * @param liudong 藏品流动信息
      * @return 藏品流动信息集合
      */
-    public List<Liudong> selectLiudongList(Liudong liudong);
+    List<Liudong> selectLiudongList(Liudong liudong);
 
     /**
      * 新增藏品流动信息
@@ -32,7 +32,7 @@ public interface LiudongMapper
      * @param liudong 藏品流动信息
      * @return 结果
      */
-    public int insertLiudong(Liudong liudong);
+    int insertLiudong(Liudong liudong);
 
     /**
      * 修改藏品流动信息
@@ -40,7 +40,7 @@ public interface LiudongMapper
      * @param liudong 藏品流动信息
      * @return 结果
      */
-    public int updateLiudong(Liudong liudong);
+    int updateLiudong(Liudong liudong);
 
     /**
      * 删除藏品流动信息
@@ -48,7 +48,7 @@ public interface LiudongMapper
      * @param id 藏品流动信息主键
      * @return 结果
      */
-    public int deleteLiudongById(Long id);
+    int deleteLiudongById(Long id);
 
     /**
      * 批量删除藏品流动信息
@@ -56,7 +56,15 @@ public interface LiudongMapper
      * @param ids 需要删除的数据主键集合
      * @return 结果
      */
-    public int deleteLiudongByIds(Long[] ids);
+    int deleteLiudongByIds(Long[] ids);
 
+
+    /**
+     * 查询藏品流动信息列表
+     *
+     * @param cangpinId 藏品id
+     * @return 藏品流动信息集合
+     */
+    List<Liudong> selectLiudongListByStates(Long cangpinId, List<String> states);
 
 }

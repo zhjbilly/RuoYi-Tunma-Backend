@@ -1,14 +1,20 @@
 package com.ruoyi.project.shenxiu.service.impl;
 
+import java.util.Arrays;
 import java.util.List;
 import com.ruoyi.framework.web.domain.AjaxResult;
 import com.ruoyi.common.utils.StringUtils;
 
+import com.ruoyi.project.shenxiu.domain.Liudong;
+import com.ruoyi.project.shenxiu.dto.CangpinDto;
+import com.ruoyi.project.shenxiu.mapper.LiudongMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.project.shenxiu.mapper.CangpinMapper;
 import com.ruoyi.project.shenxiu.domain.Cangpin;
 import com.ruoyi.project.shenxiu.service.ICangpinService;
+
+import static com.ruoyi.project.shenxiu.service.impl.LiudongServiceImpl.*;
 
 /**
  * 藏品信息Service业务层处理
@@ -21,6 +27,10 @@ public class CangpinServiceImpl implements ICangpinService
 {
     @Autowired
     private CangpinMapper cangpinMapper;
+
+    @Autowired
+    private LiudongMapper liudongmapper;
+
     /**
      * 查询藏品信息
      * 
@@ -31,6 +41,22 @@ public class CangpinServiceImpl implements ICangpinService
     public Cangpin selectCangpinById(Long id)
     {
         return cangpinMapper.selectCangpinById(id);
+    }
+
+    /**
+     * 查询藏品及其流动信息
+     * @param id
+     * @return
+     */
+    @Override
+    public CangpinDto selectCangpinDtoById(Long id) {
+        Cangpin cangpin = cangpinMapper.selectCangpinById(id);
+        if(null == cangpin) throw new RuntimeException("藏品不存在");
+        List<Liudong> liudongs = liudongmapper.selectLiudongListByStates(cangpin.getId(), Arrays.asList(PASSED, BACK_APPROVAL, RETURNED));
+        CangpinDto rlt = new CangpinDto();
+        rlt.setCangpin(cangpin);
+        rlt.setLiudong(liudongs);
+        return rlt;
     }
 
     /**
